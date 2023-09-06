@@ -1,0 +1,14 @@
+:root {
+  --primary-light: #1a4020;
+  --primary-default: #1a4020;
+  --primary-dark: #0f2617;
+  --secondary-light: #f29966;
+  --secondary-default: #f29966;
+  --secondary-dark: #bf8654;
+  --accent: #73653d;
+}
+
+body {
+  background-color: var(--secondary-dark);
+  color: var(--primary);
+}

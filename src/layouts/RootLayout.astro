@@ -1,0 +1,22 @@
+---
+import { ViewTransitions } from "astro:transitions";
+import Header from "../components/header/Header.astro";
+import "../styles/base.scss";
+import type { NavRoute } from "../components/header/Header.type";
+
+const { activeRoute } = Astro.props as { activeRoute: NavRoute };
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Doyan Jajan</title>
+    <ViewTransitions />
+  </head>
+  <body>
+    <Header activeRoute={activeRoute} />
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @import "./fonts.scss";
+  @import "./colors.scss";
+}
+
+@layer components {
+  @import "./typography.scss";
+}

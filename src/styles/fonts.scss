@@ -1,0 +1,11 @@
+@font-face {
+  font-family: "Roboto Mono";
+  src: url("../assets/fonts/RobotoMono.ttf");
+}
+
+body,
+::after,
+::before {
+  font-family: "Roboto Mono", monospace;
+  word-spacing: -4px;
+}

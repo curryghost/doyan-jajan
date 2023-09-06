@@ -1,0 +1,43 @@
+---
+import { Image } from "astro:assets";
+import { type NavItems, NavName, NavRoute } from "./Header.type";
+import logo from "../../assets/icons/logo.svg";
+const { activeRoute } = Astro.props as { activeRoute: NavRoute };
+const routes: NavItems = [
+  {
+    name: NavName.Home,
+    path: NavRoute.Home,
+    isActive: false,
+  },
+  {
+    name: NavName.About,
+    path: NavRoute.About,
+    isActive: false,
+  },
+].map((r) => (r.path === activeRoute ? { ...r, isActive: true } : r));
+---
+
+<header
+  class="flex gap-10 items-center shadow-md p-3 mb-10 bg-primary-dark"
+  transition:name="header"
+>
+  <Image src={logo} alt="logo" height={50} />
+  <nav
+    class="flex gap-2 sm:gap-5 grow-1 text-xs font-bold text-accent items-center"
+  >
+    {
+      routes.map((r) => (
+        <a
+          class={
+            r.isActive
+              ? "text-secondary pointer-events-none"
+              : "hover:text-primary"
+          }
+          href={r.path}
+        >
+          {r.name}
+        </a>
+      ))
+    }
+  </nav>
+</header>
