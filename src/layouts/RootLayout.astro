@@ -8,15 +8,16 @@ const { activeRoute } = Astro.props as { activeRoute: NavRoute };
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Doyan Jajan</title>
-    <ViewTransitions />
   </head>
   <body>
-    <Header activeRoute={activeRoute} />
-    <slot />
+    <Header activeRoute={activeRoute} transition:persist />
+    <div class="mt-[10dvh]">
+      <slot />
+    </div>
   </body>
 </html>

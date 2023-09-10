@@ -1,10 +1,10 @@
 ---
 import { NavRoute } from "../components/header/Header.type";
 import RootLayout from "../layouts/RootLayout.astro";
+import CoverPhoto from "../components/cover/CoverPhoto";
 ---
 
 <RootLayout activeRoute={NavRoute.Home}>
-  <div class="container mx-auto">
-    <h1 class="text-center title text-primary">This is home page</h1>
-  </div>
+  <CoverPhoto />
+  <div class="h-[90dvh]" id="promotion">Promotion</div>
 </RootLayout>

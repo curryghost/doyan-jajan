@@ -1,0 +1,14 @@
+---
+import RootLayout from "../../layouts/RootLayout.astro";
+---
+
+<RootLayout>
+  <div class="flex flex-col items center"></div>
+  <script>
+    const isAdmin = !!localStorage.getItem("isAdmin");
+
+    if (!isAdmin) {
+      window.location.href = "/";
+    }
+  </script>
+</RootLayout>
