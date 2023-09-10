@@ -5,6 +5,6 @@ import CoverPhoto from "../components/cover/CoverPhoto";
 ---
 
 <RootLayout activeRoute={NavRoute.Home}>
-  <CoverPhoto />
+  <CoverPhoto client:only="preact" />
   <div class="h-[90dvh]" id="promotion">Promotion</div>
 </RootLayout>

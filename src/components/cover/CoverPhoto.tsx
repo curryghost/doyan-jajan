@@ -1,8 +1,10 @@
+import { state } from "../../store/signals";
+
 export default function CoverPhoto() {
   return (
     <div class="bg-primary-dark w-full h-[90vh]">
       <img
-        src="https://static.thehoneycombers.com/wp-content/uploads/sites/2/2022/03/local-food-singapore-900x643.png"
+        src={state.value?.cover.url ?? ""}
         class="h-[90vh] w-full object-cover brightness-50 blur-[2px] absolute opacity-80"
       />
       <div class="flex flex-col items-center h-[90vh] w-full absolute">

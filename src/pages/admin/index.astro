@@ -1,9 +1,15 @@
 ---
 import RootLayout from "../../layouts/RootLayout.astro";
+import Upload from "../../components/upload/Upload";
 ---
 
 <RootLayout>
-  <div class="flex flex-col items center"></div>
+  <div class="flex flex-col items center gap-5 p-5">
+    <div class="flex flex-col gap-2 align-center items-center mt-10">
+      <p class="text-md font-semibold">Upload Cover page</p>
+      <Upload client:only="preact" />
+    </div>
+  </div>
   <script>
     const isAdmin = !!localStorage.getItem("isAdmin");
 

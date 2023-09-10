@@ -4,25 +4,60 @@ import {
   type User,
   signInWithPopup,
 } from "firebase/auth";
-import { auth, db } from "../firebase/firebase";
-import { generalLoading, isAdmin, user } from "../store/signals";
+import { auth, db, storage } from "../firebase/firebase";
+import {
+  generalLoading,
+  isAdmin,
+  state,
+  user,
+  type State,
+} from "../store/signals";
 import { SignInType, type FbUser } from "./firebase.type";
 import { useEffect } from "preact/hooks";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  onSnapshot,
+  setDoc,
+} from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 const googleProvider = new GoogleAuthProvider();
 
 export const useFirebaseInit = () => {
   useEffect(() => {
+    setState();
     setUser();
-    const unSubscribe = auth.onAuthStateChanged((u) => {
+    const authUnsub = auth.onAuthStateChanged((u) => {
       if (u) {
         getUserFromDB(u);
       } else {
         removeUser();
       }
     });
-    return () => unSubscribe();
+
+    const docCollection = collection(db, "state");
+    const storageUnsub = onSnapshot(docCollection, (snapShot) => {
+      let fbState = {};
+      snapShot.forEach((doc) => {
+        fbState = {
+          ...fbState,
+          [doc.id]: doc.data(),
+        };
+      });
+      state.value = fbState as State;
+    });
+
+    const stateUnsub = state.subscribe((s) => {
+      localStorage.setItem("state", JSON.stringify(s));
+    });
+
+    return () => {
+      authUnsub();
+      storageUnsub();
+      stateUnsub();
+    };
   }, []);
 };
 
@@ -30,6 +65,11 @@ const setUser = () => {
   const u = localStorage.getItem("user");
   user.value = u ? (JSON.parse(u) as FbUser) : null;
   isAdmin.value = !!localStorage.getItem("isAdmin");
+};
+
+const setState = () => {
+  const s = localStorage.getItem("state");
+  state.value = s ? (JSON.parse(s) as State) : null;
 };
 
 const removeUser = () => {
@@ -100,4 +140,22 @@ export const signIn = (type: SignInType) => {
 
 export const signOut = () => {
   fbSignOut(auth);
+};
+
+export const uploadFile = (file: File, path: string): Promise<void> => {
+  generalLoading.value = true;
+  const storageRef = ref(storage, path);
+  return uploadBytes(storageRef, file)
+    .then(() => {
+      return getDownloadURL(storageRef).then((url) => {
+        const docRef = doc(db, "images", "cover");
+        return setDoc(docRef, { url }).then(() => {
+          return Promise.resolve();
+        });
+      });
+    })
+    .catch((error) => {
+      return Promise.reject(error);
+    })
+    .finally(() => (generalLoading.value = false));
 };
