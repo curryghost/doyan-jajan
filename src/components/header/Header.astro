@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import { type NavItems, NavName, NavRoute } from "./Header.type";
+import LoginBtn from "./login/LoginBtn";
 import logo from "../../assets/icons/logo.svg";
 const { activeRoute } = Astro.props as { activeRoute: NavRoute };
 const routes: NavItems = [
@@ -14,16 +15,21 @@ const routes: NavItems = [
     path: NavRoute.About,
     isActive: false,
   },
+  {
+    name: NavName.Menu,
+    path: NavRoute.Menu,
+    isActive: false,
+  },
 ].map((r) => (r.path === activeRoute ? { ...r, isActive: true } : r));
 ---
 
 <header
-  class="flex gap-10 items-center shadow-md p-3 mb-10 bg-primary-dark"
+  class="flex gap-10 items-center shadow-md p-3 bg-primary-dark h-[10dvh] w-full fixed z-10 top-0"
   transition:name="header"
 >
-  <Image src={logo} alt="logo" height={50} />
+  <a href="/"><Image src={logo} alt="logo" height={50} /></a>
   <nav
-    class="flex gap-2 sm:gap-5 grow-1 text-xs font-bold text-accent items-center"
+    class="flex gap-2 sm:gap-5 flex-grow text-xs font-bold text-accent items-center"
   >
     {
       routes.map((r) => (
@@ -40,4 +46,5 @@ const routes: NavItems = [
       ))
     }
   </nav>
+  <LoginBtn client:only="preact" transition:persist />
 </header>
